@@ -1,21 +1,23 @@
-from RPi import GPIO
-from time import sleep
+import CHIP_IO.GPIO as GPIO
+import time
+ 
 
-clk = 17
-dt = 18
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+PIN_A = "XIO-P0"
+PIN_B = "XIO-P1"
+
+
+GPIO.setup(PIN_A, GPIO.IN)
+GPIO.setup(PIN_B, GPIO.IN)
 
 counter = 0
-clkLastState = GPIO.input(clk)
+clkLastState = GPIO.input(PIN_A)
 
 try:
 
         while True:
-                clkState = GPIO.input(clk)
-                dtState = GPIO.input(dt)
+                clkState = GPIO.input(PIN_A)
+                dtState = GPIO.input(PIN_B)
                 if clkState != clkLastState:
                         if dtState != clkState:
                                 counter += 1
@@ -23,6 +25,6 @@ try:
                                 counter -= 1
                         print counter
                 clkLastState = clkState
-                sleep(0.01)
 finally:
         GPIO.cleanup()
+
